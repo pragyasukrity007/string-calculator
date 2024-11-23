@@ -28,5 +28,38 @@ describe("String Calculator", () => {
   //Test new lines between numbers
   it("supports new line as a delimiter", () => {
     expect(add("1\n2,3")).toBe(6);
+    expect(add("1,2\n3")).toBe(6);
+    expect(add("1\n2\n3")).toBe(6);
+  });
+
+  //Test Custom Delimiter
+  it("supports custom single-character delimiters", () => {
+    expect(add("//;\n1;2")).toBe(3);
+    expect(add("//|\n1|2|3")).toBe(6);
+    expect(add("//@\n1@2")).toBe(3);
+  });
+
+  it("returns 0 if no numbers are provided after the delimiter", () => {
+    expect(add("//;\n")).toBe(0);
+  });
+
+  it("handles mixed delimiters and empty values correctly", () => {
+    expect(add("//;\n1;;2")).toBe(3); // Double delimiter results in valid numbers
+  });
+
+  it("handles empty sections with custom delimiter", () => {
+    expect(add("//;\n1;;2")).toBe(3);
+  });
+
+  it("handles whitespace around numbers", () => {
+    expect(add("1, 2,3 ")).toBe(6);
+  });
+
+  it("handles invalid number formats", () => {
+    expect(add("1,a,3")).toBe(4); // Invalid number 'a' treated as 0
+  });
+
+  it("handles missing numbers section with custom delimiter", () => {
+    expect(add("//@\n")).toBe(0);
   });
 });
