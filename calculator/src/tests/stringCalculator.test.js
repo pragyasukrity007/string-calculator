@@ -19,5 +19,9 @@ describe("String Calculator", () => {
     expect(add("2,3")).toBe(5);
   });
 
-
+  //Test multiple comma-separated numbers
+  it("adds multiple comma-separated numbers", () => {
+    expect(add("1,5,2,8,3")).toBe(19);
+    expect(add("2,3,4,5")).toBe(14);
+  });
 });
