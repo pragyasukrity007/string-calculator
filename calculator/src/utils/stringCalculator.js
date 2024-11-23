@@ -1,4 +1,7 @@
 export function add(numbers) {
-    if (!numbers) return 0;
-    return 0;
-  }
+  // Handle empty string
+  if (!numbers) return 0;
+
+  // Parse single number
+  return parseInt(numbers);
+}
