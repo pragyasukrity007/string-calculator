@@ -169,7 +169,7 @@ export default function StringCalculator() {
                 <li>With newline: 1\n2,3</li>
                 <li>Custom delimiter: //;\n1;2;3</li>
                 <li>Multiple delimiters: //[*][%]\n1*2%3</li>
-                <li>Long delimiter: //longdelimiter\n1longdelimiter2</li>
+                <li>Long delimiter: //[**][%%]\n1**2%%3</li>
               </ul>
             </div>
           )}
