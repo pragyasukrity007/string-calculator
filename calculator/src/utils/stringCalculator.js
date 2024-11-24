@@ -51,9 +51,9 @@ export function add(numbers) {
     const delimitersSection = numbers.substring(2, delimiterIndex); // Extract delimiter
     const numbersSection = numbers.substring(delimiterIndex + 1); // Extract numbers section
 
-    // Handle multiple delimiters in the format //[delim1][delim2]
+    // Handle multiple delimiters in the format //[longdelimiter]\n1longdelimiter2
     const delimiters = delimitersSection
-      .match(/\[([^\]]+)\]/g) // Match custom delimiters like [*] and [%]
+      .match(/\[([^\]]+)\]/g) // Match custom delimiters like [longdelimiter]
       ?.map((d) => d.slice(1, -1)) || [delimitersSection]; // Extract delimiter content or use default
 
     console.log("Extracted delimiters:", delimiters); // Debugging step

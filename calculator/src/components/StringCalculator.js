@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from "react";
 
@@ -40,7 +39,7 @@ export default function StringCalculator() {
       const delimitersSection = numbers.substring(2, firstNewLine);
       processedNumbers = numbers.substring(firstNewLine + 1);
 
-      // Extract custom delimiters in the form [*][%]
+      // Extract custom delimiters in the form [longdelimiter]
       const delimiterMatches = delimitersSection.match(/\[([^\]]+)\]/g);
       if (delimiterMatches) {
         delimiters = delimiterMatches.map((match) => match.slice(1, -1)); // Remove brackets
@@ -170,6 +169,7 @@ export default function StringCalculator() {
                 <li>With newline: 1\n2,3</li>
                 <li>Custom delimiter: //;\n1;2;3</li>
                 <li>Multiple delimiters: //[*][%]\n1*2%3</li>
+                <li>Long delimiter: //longdelimiter\n1longdelimiter2</li>
               </ul>
             </div>
           )}
