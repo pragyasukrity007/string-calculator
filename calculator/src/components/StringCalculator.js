@@ -12,13 +12,19 @@ import { Button } from "@/ui/button";
 import { Textarea } from "@/ui/textarea";
 import { Alert, AlertDescription } from "@/ui/alert";
 
+let addCallCount = 0;
+
 export default function StringCalculator() {
   const [input, setInput] = useState("");
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const [showExamples, setShowExamples] = useState(false);
+  const [callCount, setCallCount] = useState(0);
 
   const add = (numbers) => {
+    addCallCount++; // Increment the call count
+    setCallCount(addCallCount); // Update the state to reflect in the UI
+
     if (!numbers) return 0;
 
     let delimiter = ",";
@@ -117,6 +123,12 @@ export default function StringCalculator() {
               </AlertDescription>
             </Alert>
           )}
+
+          <div className="text-center mt-4">
+            <p className="font-medium text-gray-600">
+              Call Counter: <span className="text-blue-500">{callCount}</span>
+            </p>
+          </div>
         </CardContent>
 
         <CardFooter className="flex flex-col">
