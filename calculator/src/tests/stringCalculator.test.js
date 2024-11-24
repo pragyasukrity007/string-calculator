@@ -1,6 +1,10 @@
-import { add } from "@/utils/stringCalculator";
+import { add, getCalledCount, resetCallCount } from "@/utils/stringCalculator";
 
 describe("String Calculator", () => {
+  beforeEach(() => {
+    resetCallCount(); // Reset the call count before each test
+  });
+
   //Step 1:  Test empty string
   it("returns 0 for an empty string", () => {
     expect(add("")).toBe(0);
@@ -63,13 +67,33 @@ describe("String Calculator", () => {
     expect(add("//@\n")).toBe(0);
   });
 
-   // Step 7: Handle negative numbers
-   test('throws on single negative number', () => {
-    expect(() => add('-1,2')).toThrow('negative numbers not allowed: -1');
+  // Step 7: Handle negative numbers
+  test("throws on single negative number", () => {
+    expect(() => add("-1,2")).toThrow("negative numbers not allowed: -1");
   });
 
-  test('shows all negative numbers in exception', () => {
-    expect(() => add('1,-2,-3,4')).toThrow('negative numbers not allowed: -2, -3');
+  test("shows all negative numbers in exception", () => {
+    expect(() => add("1,-2,-3,4")).toThrow(
+      "negative numbers not allowed: -2, -3"
+    );
   });
-  
+
+  //Step 9: Call Counter
+  test("getCalledCount should initially return 0", () => {
+    expect(getCalledCount()).toBe(0);
+  });
+
+  test("getCalledCount should increment when add is called", () => {
+    const initialCount = getCalledCount();
+    add("1,2");
+    expect(getCalledCount()).toBe(initialCount + 1);
+  });
+
+  test("getCalledCount should increment for each add call", () => {
+    const initialCount = getCalledCount();
+    add("1,2");
+    add("3,4");
+    add("5,6");
+    expect(getCalledCount()).toBe(initialCount + 3);
+  });
 });
