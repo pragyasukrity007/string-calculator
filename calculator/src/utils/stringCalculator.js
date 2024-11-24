@@ -26,12 +26,15 @@ export function add(numbers) {
         if (parsed < 0) {
           negativeNumbers.push(parsed);
         }
-        return parsed;
+        // Ignore numbers greater than 1000
+        return parsed > 1000 ? 0 : parsed;
       })
       .reduce((sum, num) => sum + num, 0);
 
     if (negativeNumbers.length > 0) {
-      throw new Error(`negative numbers not allowed: ${negativeNumbers.join(", ")}`);
+      throw new Error(
+        `negative numbers not allowed: ${negativeNumbers.join(", ")}`
+      );
     }
 
     return result;
@@ -46,7 +49,7 @@ export function add(numbers) {
     const delimiter = numbers.substring(2, delimiterIndex);
     const numbersSection = numbers.substring(delimiterIndex + 1);
     const escapedDelimiter = delimiter.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    return processNumbers(numbersSection, new RegExp(`[,\\n${escapedDelimiter}]`));
+    return processNumbers(numbersSection, new RegExp(`[,\n${escapedDelimiter}]`));
   }
 
   return processNumbers(numbers, /[,\n]/);
