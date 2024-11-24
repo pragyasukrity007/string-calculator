@@ -96,4 +96,11 @@ describe("String Calculator", () => {
     add("5,6");
     expect(getCalledCount()).toBe(initialCount + 3);
   });
+
+  //Step 10: Test for numbers greater than 1000
+  it("ignores numbers greater than 1000", () => {
+    expect(add("1001,2")).toBe(2); // 1001 is ignored
+    expect(add("1000,1001")).toBe(1000); // 1001 is ignored
+    expect(add("999,1001,1")).toBe(1000); // Only 999 and 1 are summed
+  });
 });
