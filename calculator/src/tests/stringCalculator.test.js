@@ -103,4 +103,26 @@ describe("String Calculator", () => {
     expect(add("1000,1001")).toBe(1000); // 1001 is ignored
     expect(add("999,1001,1")).toBe(1000); // Only 999 and 1 are summed
   });
+
+  //Step 11: Test for multiple delimiters
+  it("allows multiple custom delimiters", () => {
+    expect(add("//[*][%]\n1*2%3")).toBe(6);
+    expect(add("//[***][%%%]\n1***2%%%3")).toBe(6);
+    expect(add("//[*][%]\n1*2%3%4")).toBe(10);
+  });
+
+  it("handles single custom delimiter", () => {
+    expect(add("//;\n1;2;3")).toBe(6);
+    expect(add("//[***]\n1***2***3")).toBe(6);
+  });
+
+  it("ignores numbers greater than 1000", () => {
+    expect(add("//[*][%]\n1001*2%3")).toBe(5);
+  });
+
+  it("throws an error for negative numbers", () => {
+    expect(() => add("//[*][%]\n1*2%-3")).toThrow(
+      "negative numbers not allowed: -3"
+    );
+  });
 });
