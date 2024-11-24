@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState } from "react";
 
@@ -27,43 +28,64 @@ export default function StringCalculator() {
 
     if (!numbers) return 0;
 
-    let delimiter = ",";
     let processedNumbers = numbers;
+    let delimiters = [",", "\n"]; // Default delimiters
 
-    // Check for custom delimiter
+    // Check for custom delimiter (e.g., //[*][%]\n1*2%3)
     if (numbers.startsWith("//")) {
       const firstNewLine = numbers.indexOf("\n");
       if (firstNewLine === -1) {
         throw new Error("Invalid format for custom delimiter");
       }
-      delimiter = numbers.substring(2, firstNewLine);
+      const delimitersSection = numbers.substring(2, firstNewLine);
       processedNumbers = numbers.substring(firstNewLine + 1);
+
+      // Extract custom delimiters in the form [*][%]
+      const delimiterMatches = delimitersSection.match(/\[([^\]]+)\]/g);
+      if (delimiterMatches) {
+        delimiters = delimiterMatches.map((match) => match.slice(1, -1)); // Remove brackets
+      } else {
+        delimiters = [delimitersSection]; // If only one custom delimiter
+      }
     }
 
-    // Split numbers by delimiter and newlines
+    // Escape delimiters for regex
+    const escapedDelimiters = delimiters
+      .map((d) => d.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+      .join("|");
+
+    // Split numbers by the custom delimiters and newlines
     const nums = processedNumbers
-      .split(new RegExp(`[${delimiter}\\n]`))
+      .split(new RegExp(`[${escapedDelimiters}\\n]+`)) // Split using custom delimiters and newlines
       .map((num) => num.trim())
       .filter((num) => num !== "");
 
-    // Convert to numbers and validate
+    // Collect negative numbers to throw in error message
+    const negativeNumbers = [];
     const parsedNums = nums.map((num) => {
       const parsed = parseInt(num, 10);
       if (isNaN(parsed)) {
         throw new Error(`Invalid number: ${num}`);
       }
       if (parsed < 0) {
-        throw new Error("Negative numbers not allowed");
+        negativeNumbers.push(parsed); // Collect negative numbers
       }
       return parsed <= 1000 ? parsed : 0; // Numbers > 1000 are ignored
     });
+
+    // If there are any negative numbers, throw an error with all of them in the message
+    if (negativeNumbers.length > 0) {
+      throw new Error(
+        `Negative numbers not allowed: ${negativeNumbers.join(", ")}`
+      );
+    }
 
     return parsedNums.reduce((sum, num) => sum + num, 0);
   };
 
   const handleCalculate = () => {
     try {
-      const normalizedInput = input.replace(/\\n/g, "\n");
+      const normalizedInput = input.replace(/\\n/g, "\n"); // Normalize \n
       const calculatedResult = add(normalizedInput);
       setResult(calculatedResult);
       setError(null);
@@ -99,7 +121,7 @@ export default function StringCalculator() {
             value={input}
             onChange={handleInputChange}
             onKeyPress={handleKeyPress}
-            placeholder="Enter numbers (e.g. 1,2,3 or //;\n1;2)"
+            placeholder="Enter numbers (e.g. 1,2,3 or //;\n1;2) or custom delimiters"
             className="resize-none"
             rows={3}
           />
@@ -147,6 +169,7 @@ export default function StringCalculator() {
                 <li>Simple: 1,2,3</li>
                 <li>With newline: 1\n2,3</li>
                 <li>Custom delimiter: //;\n1;2;3</li>
+                <li>Multiple delimiters: //[*][%]\n1*2%3</li>
               </ul>
             </div>
           )}
