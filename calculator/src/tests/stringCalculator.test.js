@@ -125,4 +125,38 @@ describe("String Calculator", () => {
       "negative numbers not allowed: -3"
     );
   });
+
+  //Step 11: Test for long delimiters
+  test("should handle long delimiters correctly", () => {
+    const input = "//longdelimiter\n1longdelimiter2";
+    const result = add(input);
+    expect(result).toBe(3); // The sum of 1 and 2
+  });
+
+  test("should support long delimiters", () => {
+    expect(add("//[***]\n1***2***3")).toBe(6); // Testing with '***' delimiter
+  });
+
+  test("should support multiple long delimiters", () => {
+    expect(add("//[***][%%%]\n1***2%%%3")).toBe(6); // Multiple delimiters '***' and '%%%'
+  });
+
+  test("should handle long delimiters with other characters", () => {
+    expect(add("//[****][%%]\n4****5%%6")).toBe(15); // Complex delimiters '****' and '%%'
+  });
+
+  test("should return 0 for empty input with long delimiter", () => {
+    expect(add("//[***]\n")).toBe(0); // Empty input, should return 0
+  });
+
+  test("should ignore numbers greater than 1000 with long delimiter", () => {
+    expect(add("//[***]\n1***1001***3")).toBe(4); // 1001 should be ignored
+  });
+
+  test("should throw error for negative numbers with long delimiter", () => {
+    expect(() => add("//[***]\n-1***2")).toThrowError(
+      "negative numbers not allowed: -1"
+    );
+    // Should throw an error for negative numbers
+  });
 });
