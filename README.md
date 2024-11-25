@@ -29,9 +29,11 @@ Example:
 2. Delimiters can be of any length:
 Example:
 "//[***]\n1***2***3" → 6
+
 3.Multiple delimiters are supported:
 Example:
 "//[*][%]\n1*2%3" → 6
+
 4.Handles multiple delimiters of varying lengths:
 Example:
 "//[**][%%]\n1**2%%3" → 6
