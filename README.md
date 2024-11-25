@@ -26,15 +26,12 @@ Example:
 1. Custom delimiters can be specified using the format: //[delimiter]\n[numbers...].
 Example:
 "//;\n1;2" → 3
-
 2. Delimiters can be of any length:
 Example:
 "//[***]\n1***2***3" → 6
-
 3.Multiple delimiters are supported:
 Example:
 "//[*][%]\n1*2%3" → 6
-
 4.Handles multiple delimiters of varying lengths:
 Example:
 "//[**][%%]\n1**2%%3" → 6
@@ -54,4 +51,23 @@ Example:
 The Add method tracks how many times it has been called:
 Example:
 GetCalledCount() → Number of `Add` method invocations
+
+
+**Usage**
+Example Inputs:
+
+Basic:
+Add("1,2,3") → 6
+
+Newlines:
+Add("1\n2,3") → 6
+
+Custom delimiter:
+Add("//[***]\n1***2***3") → 6
+
+Multiple delimiters:
+Add("//[*][%]\n1*2%3") → 6
+
+Numbers >1000 ignored:
+Add("2,1001") → 2
 
